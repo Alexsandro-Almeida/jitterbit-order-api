@@ -28,3 +28,26 @@ exports.createOrder = async (req, res) => {
         });
     }
 };
+
+// Obter por ID (parâmetro na URL)
+exports.getOrderByNumber = async (req, res) => {
+    try {
+        const order = await Order.findOne({ orderId: req.params.orderId });
+        if (!order) {
+            return res.status(404).json({ message: "Pedido não encontrado" });
+        }
+        return res.status(200).json(order);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+// Listar todos os pedidos
+exports.listOrders = async (req, res) => {
+    try {
+        const orders = await Order.find();
+        return res.status(200).json(orders);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
